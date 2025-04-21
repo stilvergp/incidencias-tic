@@ -1,0 +1,7 @@
+{
+  "name": "incidencias-tic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
