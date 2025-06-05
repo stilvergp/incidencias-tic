@@ -67,7 +67,7 @@ Para ejecutar la aplicación en tu entorno local:
 ```
 ionic serve
 ```
-sto iniciará un servidor de desarrollo y abrirá la aplicación PWA en tu navegador predeterminado. Los cambios en el código se reflejarán automáticamente.
+Esto iniciará un servidor de desarrollo y abrirá la aplicación PWA en tu navegador predeterminado. Los cambios en el código se reflejarán automáticamente.
 
 ---
 
