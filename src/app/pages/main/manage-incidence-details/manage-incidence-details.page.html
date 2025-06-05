@@ -1,0 +1,118 @@
+<app-header title="Gestionar Incidencia" backButtonURL="main/incidencias"></app-header>
+
+<ion-content class="ion-padding">
+  <div class="content-wrapper">
+    <ion-card *ngIf="!isLoading && incidence && classroom && device; else loadingSkeleton" class="incidence-card">
+      <ion-card-header>
+        <ion-card-title class="title">{{ incidence.title }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="info-pair">
+          <ion-icon name="school-outline"></ion-icon>
+          <span><strong>Aula:</strong> {{ classroom.name }} - {{ classroom.location }}</span>
+        </div>
+
+        <div class="info-pair">
+          <ion-icon name="laptop-outline"></ion-icon>
+          <span><strong>Tipo de equipo:</strong> {{ device.type }}</span>
+        </div>
+
+        <div class="info-pair">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <span>
+            <strong>Estado:</strong>
+            <span class="status-label" [ngStyle]="{ color: getStatusColor(incidence.status) }">
+              {{ getStatusLabel(incidence.status) }}
+            </span>
+          </span>
+        </div>
+
+        <ion-img
+          class="equipment-image"
+          [src]="incidence.image || 'assets/pc-placeholder.png'"
+          alt="Imagen del equipo"
+        ></ion-img>
+
+        <div class="section">
+          <h3>Descripción</h3>
+          <p>{{ incidence.description }}</p>
+        </div>
+
+        <div class="section">
+          <h3>Creada</h3>
+          <p>{{ incidence.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+
+        <div class="section">
+          <h3>Comentarios</h3>
+          <ul *ngIf="comments?.length; else noComments">
+            <li *ngFor="let comment of comments">
+              {{ comment.message }}
+            </li>
+          </ul>
+          <ng-template #noComments>
+            <p class="muted">No hay comentarios.</p>
+          </ng-template>
+        </div>
+
+        <div class="section">
+          <h3>Diagnóstico</h3>
+          <p *ngIf="incidence.diagnose?.length; else noDiagnose">
+            {{ incidence.diagnose }}
+          </p>
+          <ng-template #noDiagnose>
+            <p class="muted">No diagnosticado</p>
+          </ng-template>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ng-template #loadingSkeleton>
+      <ion-card class="incidence-card">
+        <ion-card-header>
+          <ion-skeleton-text animated style="width: 60%; height: 24px;"></ion-skeleton-text>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div class="info-pair">
+            <ion-icon name="school-outline"></ion-icon>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </div>
+
+          <div class="info-pair">
+            <ion-icon name="laptop-outline"></ion-icon>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </div>
+
+          <div class="info-pair">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+          </div>
+
+          <ion-skeleton-text animated style="width: 100%; height: 200px; border-radius: 8px;"></ion-skeleton-text>
+
+          <div class="section">
+            <h3>Descripción</h3>
+            <ion-skeleton-text animated style="width: 100%; height: 60px"></ion-skeleton-text>
+          </div>
+
+          <div class="section">
+            <h3>Creada</h3>
+            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+          </div>
+
+          <div class="section">
+            <h3>Comentarios</h3>
+            <ion-skeleton-text animated style="width: 100%; height: 40px"></ion-skeleton-text>
+          </div>
+
+          <div class="section">
+            <h3>Diagnóstico</h3>
+            <ion-skeleton-text animated style="width: 100%; height: 40px"></ion-skeleton-text>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </div>
+</ion-content>

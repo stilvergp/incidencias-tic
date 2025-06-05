@@ -1,0 +1,76 @@
+<app-header title="Aulas" [showMenuButton]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="Desliza para refrescar" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <h2 style="text-align: center; font-weight: bold">Gestión de Aulas</h2>
+  <div style="display: flex; margin-bottom: 10px; margin-top: 10px; width: 100%; align-items: center;">
+    <div style="display: flex; align-items: center;">
+      <ion-input [(ngModel)]="searchValue" placeholder="Buscar..." (ngModelChange)="onSearchChange($event)"></ion-input>
+      <ion-icon slot="icon-only" name="search"></ion-icon>
+    </div>
+  </div>
+
+  <div *ngIf="loading">
+    <ion-card *ngFor="let placeholder of [].constructor(5)">
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 10%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; margin-top: 10px;"></ion-skeleton-text>
+        <div class="btn-actions" style="margin-top: 10px;">
+          <ion-button fill="solid" size="small" shape="square" color="medium" disabled>
+            <ion-skeleton-text animated style="width: 50px; height: 20px;"></ion-skeleton-text>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="classrooms.length > 0">
+      <div class="classroom-item" *ngFor="let classroom of classrooms">
+        <ion-card class="classroom-info">
+          <ion-card-header style="position: relative;">
+            <ion-card-title style="font-weight: bold">{{ classroom.name }} - {{ classroom.location }}</ion-card-title>
+            <ion-button fill="outline" shape="square" color="danger"
+                        style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; --border-radius: 8px;"
+                        (click)="deleteClassroom(classroom)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="btn-actions">
+              <ion-button fill="solid" size="small" shape="round" color="primary"
+                          (click)="updateClassroom(classroom)">
+                Actualizar
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div *ngIf="classrooms.length === 0">
+      <h2 style="text-align: center; font-weight: bold">No se encontraron resultados</h2>
+    </div>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreDevices($event)" *ngIf="canLoadMore">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más incidencias...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addClassroom()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

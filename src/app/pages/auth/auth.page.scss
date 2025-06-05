@@ -1,0 +1,37 @@
+.login-form {
+  text-align: center;
+  padding: 20px;
+}
+
+@media (min-width: 769px) {
+  .auth-form {
+    width: 500px;
+  }
+}
+
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit {
+  margin-top: 40px;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-password-link a {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-link a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}

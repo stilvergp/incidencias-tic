@@ -1,0 +1,117 @@
+<app-header title="Mis Incidencias" [showMenuButton]="true"></app-header>
+<ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="Desliza para refrescar" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <h2>Bienvenido, {{ user.name }}</h2>
+
+  <div class="resumen">
+    <h3>Resumen rápido:</h3>
+    <p><i class="bi bi-geo-alt-fill" style="color: red;"></i> Abiertas: {{ resumen.open }}</p>
+    <p><i class="bi bi-check-circle-fill" style="color: green;"></i> Resueltas: {{ resumen.closed }}</p>
+  </div>
+
+  <h2 style="text-align: center; font-weight: bold">Incidencias</h2>
+
+  <div
+    style="display: flex; margin-bottom: 10px; margin-top: 10px; width: 100%; align-items: center;justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <ion-label>Estado:</ion-label>
+      <ion-select [(ngModel)]="statusFilter" (ionChange)="getIncidences()" interface="popover">
+        <ion-select-option value="">Cualquiera</ion-select-option>
+        <ion-select-option value="OPEN">Abierta</ion-select-option>
+        <ion-select-option value="IN_PROGRESS">En revisión</ion-select-option>
+        <ion-select-option value="RESOLVED">Resuelta</ion-select-option>
+      </ion-select>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <ion-input [(ngModel)]="searchValue" placeholder="Buscar..." (ngModelChange)="onSearchChange($event)"></ion-input>
+      <ion-button fill="clear" slot="end">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <ion-segment [(ngModel)]="segment" (ionChange)="setSegment($event.detail.value)">
+    <ion-segment-button value="open">Abiertas</ion-segment-button>
+    <ion-segment-button value="closed">Resueltas</ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="loading">
+    <ion-card *ngFor="let placeholder of [].constructor(5)">
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 30%; margin-top: 10px;"></ion-skeleton-text>
+        <div class="btn-actions" style="margin-top: 10px;">
+          <ion-button fill="solid" size="small" shape="square" color="medium" disabled>
+            <ion-skeleton-text animated style="width: 50px; height: 20px;"></ion-skeleton-text>
+          </ion-button>
+          <ion-button fill="clear" size="small" color="primary" disabled>
+            <ion-skeleton-text animated style="width: 70px; height: 20px;"></ion-skeleton-text>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="incidences.length > 0">
+      <div class="incidencia-item" *ngFor="let incidence of incidences">
+        <ion-card class="incidencia-info">
+          <ion-card-header>
+            <ion-card-title style="font-weight: bold">{{ incidence.title }}</ion-card-title>
+            <ion-button fill="outline" shape="square" color="danger"
+                        style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; --border-radius: 8px;"
+                        (click)="deleteIncidence(incidence)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-card-header>
+          <ion-card-content>
+            <p>{{ incidence.createdAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+            <span>
+              <strong>Estado:</strong>
+              <span class="status-label" [ngStyle]="{ color: getStatusColor(incidence.status) }" style="font-weight: bold">
+                {{ getStatusLabel(incidence.status) }}
+              </span>
+            </span>
+            <div class="btn-actions">
+              <ion-button fill="solid" size="small" shape="round" class="btn-update"
+                          (click)="updateIncidence(incidence)">
+                Actualizar
+              </ion-button>
+              <ion-button fill="clear" size="small" color="primary"
+                          [routerLink]="['detalles', incidence.id]">
+                Ver detalles
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div *ngIf="incidences.length === 0">
+      <h2 style="text-align: center; font-weight: bold">No se encontraron resultados</h2>
+    </div>
+  </div>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreIncidences($event)" *ngIf="canLoadMore">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más incidencias...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addIncidence()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

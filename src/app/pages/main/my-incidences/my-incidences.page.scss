@@ -1,0 +1,92 @@
+ion-content {
+  --padding-top: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+
+.incidencia-item {
+  background-color: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 769px) {
+  .incidencia-info {
+    font-size: 0.95rem;
+  }
+}
+
+.ver-detalle {
+  font-size: 0.9rem;
+  color: #007aff;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-left: 8px;
+  margin-top: 4px;
+}
+
+.btn-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.resumen h3 {
+  font-size: 1.2rem;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.resumen p {
+  font-size: 1rem;
+  margin: 2px 0;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+ion-segment {
+  margin-bottom: 12px;
+}
+
+ion-card {
+  margin-bottom: 12px;
+}
+
+ion-card-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+ion-card-content p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+ion-button {
+  margin-top: 8px;
+}
+
+.show-more-button ion-button {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+ion-fab-button {
+  --box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,20 @@
+.sign-up-form {
+  text-align: center;
+  padding: 20px;
+}
+
+@media (min-width: 769px) {
+  .auth-form {
+    width: 500px;
+  }
+}
+
+.d-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit {
+  margin-top: 40px;
+}

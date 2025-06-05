@@ -1,0 +1,86 @@
+<app-header title="Gestión de incidencia" [isModal]="true"></app-header>
+<ion-content>
+  <div class="incidence-form">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()">
+      <div class="incidence-image">
+        <img *ngIf="incidence.image" [src]="incidence.image" class="incidence-image" alt="Imagen de la incidencia"/>
+      </div>
+
+      <div class="incidence-details">
+        <ion-item lines="none">
+          <ion-label position="stacked">Título</ion-label>
+          <ion-text>{{ incidence.title }}</ion-text>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Descripción</ion-label>
+          <ion-text>{{ incidence.description }}</ion-text>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Aula</ion-label>
+          <ion-text>{{ classroom.name }}</ion-text>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Equipo</ion-label>
+          <ion-text>{{ device.type }}</ion-text>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Estado</ion-label>
+          <ion-select formControlName="status" interface="popover">
+            <ion-select-option value="OPEN">Abierta</ion-select-option>
+            <ion-select-option value="IN_PROGRESS">En proceso</ion-select-option>
+            <ion-select-option value="RESOLVED">Resuelta</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Diagnóstico</ion-label>
+          <ion-textarea
+            formControlName="diagnose"
+            autoGrow="true"
+            placeholder="Escribe el diagnóstico"
+          ></ion-textarea>
+        </ion-item>
+        <div *ngIf="form.get('diagnose')?.invalid && form.get('diagnose')?.touched" class="text-danger">
+          <small *ngIf="form.get('diagnose')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('diagnose')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+
+        <ion-item lines="full">
+          <ion-label position="stacked">Comentarios</ion-label>
+        </ion-item>
+
+        <div class="comment-section">
+          <ion-list *ngIf="comments?.length; else noComments">
+            <ion-item *ngFor="let comment of comments">
+              <ion-text>{{ comment.message }}</ion-text>
+            </ion-item>
+          </ion-list>
+          <ng-template #noComments>
+            <p class="muted">No hay comentarios.</p>
+          </ng-template>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Añadir comentario</ion-label>
+          <ion-textarea
+            formControlName="comments"
+            autoGrow="true"
+            placeholder="Escribe un comentario (opcional)"
+          ></ion-textarea>
+        </ion-item>
+        <div *ngIf="form.get('comments')?.invalid && form.get('comments')?.touched" class="text-danger">
+          <small *ngIf="form.get('comments')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('comments')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+
+        <ion-button mode="ios" class="ion-margin left-button" type="submit" [disabled]="form.invalid">
+          Guardar cambios
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

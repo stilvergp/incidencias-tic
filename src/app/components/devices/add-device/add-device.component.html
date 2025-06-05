@@ -1,0 +1,78 @@
+<app-header title="Añadir equipo" [isModal]="true"></app-header>
+
+<ion-content>
+  <div class="device-form">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()">
+      <div class="device-image">
+        <img *ngIf="form.value.image" [src]="form.value.image" class="device-image" alt=""/>
+        <ion-icon class="image-icon" name="image-outline" *ngIf="!form.value.image"></ion-icon>
+      </div>
+      <ion-button (click)="takeImage()" size="small" shape="round" mode="ios">
+        Tomar / Seleccionar
+      </ion-button>
+
+      <div class="device-details">
+        <ion-item>
+          <ion-label position="floating">Tipo de equipo</ion-label>
+          <ion-select formControlName="type" interface="popover" placeholder="Selecciona un tipo">
+            <ion-select-option value="PC">PC</ion-select-option>
+            <ion-select-option value="Portátil">Portátil</ion-select-option>
+            <ion-select-option value="Proyector">Proyector</ion-select-option>
+            <ion-select-option value="Teclado">Teclado</ion-select-option>
+            <ion-select-option value="Ratón">Ratón</ion-select-option>
+            <ion-select-option value="Otro">Otro</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('type')?.invalid && form.get('type')?.touched" class="text-danger">
+          <small>Seleccionar tipo es obligatorio.</small>
+        </div>
+
+        <app-custom-input [control]="form.controls.brand" type="text" label="Marca"></app-custom-input>
+        <div *ngIf="form.get('brand')?.invalid && form.get('brand')?.touched" class="text-danger">
+          <small>La marca es obligatoria.</small>
+        </div>
+        <div *ngIf="form.get('serial_number')?.invalid && form.get('serial_number')?.touched" class="text-danger">
+          <small *ngIf="form.get('serial_number')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('serial_number')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+
+        <app-custom-input [control]="form.controls.serial_number" type="text"
+                          label="Número de serie"></app-custom-input>
+        <div *ngIf="form.get('serial_number')?.invalid && form.get('serial_number')?.touched" class="text-danger">
+          <small>El número de serie es obligatorio.</small>
+        </div>
+        <div *ngIf="form.get('serial_number')?.invalid && form.get('serial_number')?.touched" class="text-danger">
+          <small *ngIf="form.get('serial_number')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('serial_number')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Estado</ion-label>
+          <ion-select formControlName="status" interface="popover" placeholder="Selecciona estado">
+            <ion-select-option value="WORKING">Funcional</ion-select-option>
+            <ion-select-option value="OUT_OF_SERVICE">Fuera de servicio</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('status')?.invalid && form.get('status')?.touched" class="text-danger">
+          <small>Seleccionar estado es obligatorio.</small>
+        </div>
+
+        <ion-item>
+          <ion-label position="floating">Aula</ion-label>
+          <ion-select formControlName="classroomId" interface="popover" placeholder="Selecciona un aula">
+            <ion-select-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+              {{ classroom.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('classroomId')?.invalid && form.get('classroomId')?.touched" class="text-danger">
+          <small>Seleccionar un aula es obligatorio.</small>
+        </div>
+
+        <ion-button mode="ios" class="ion-margin left-button" type="submit" [disabled]="form.invalid">
+          Añadir
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

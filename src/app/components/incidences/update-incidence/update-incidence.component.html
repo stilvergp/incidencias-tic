@@ -1,0 +1,95 @@
+<app-header title="Actualizar incidencia" [isModal]="true"></app-header>
+
+<ion-content>
+  <div class="incidence-form">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()">
+      <div class="incidence-image">
+        <img *ngIf="form.value.image" [src]="form.value.image" class="incidence-image" alt="" />
+        <ion-icon class="image-icon" name="image-outline" *ngIf="!form.value.image"></ion-icon>
+      </div>
+
+      <ion-button (click)="takeImage()" size="small" shape="round" mode="ios">
+        Cambiar imagen
+      </ion-button>
+
+      <div class="incidence-details">
+        <app-custom-input
+          autocomplete="title"
+          [control]="form.controls.title"
+          type="text"
+          label="Título"
+        ></app-custom-input>
+        <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" class="text-danger">
+          <small *ngIf="form.get('title')?.hasError('required')">El título es obligatorio.</small>
+          <small *ngIf="form.get('title')?.hasError('minlength')">El título debe tener al menos 3 caracteres</small>
+          <small *ngIf="form.get('title')?.hasError('maxlength')">El título debe tener menos de 100 caracteres</small>
+        </div>
+
+        <ion-item lines="none">
+          <ion-label style="margin-bottom: 10px" position="floating">Descripción</ion-label>
+          <ion-textarea
+            formControlName="description"
+            placeholder="Escribe una descripción"
+            autoGrow="true"
+            rows="4"
+          ></ion-textarea>
+        </ion-item>
+        <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="text-danger">
+          <small *ngIf="form.get('description')?.hasError('required')">La descripción es obligatoria</small>
+          <small *ngIf="form.get('description')?.hasError('minlength')">La descripción debe tener al menos 10 caracteres</small>
+          <small *ngIf="form.get('description')?.hasError('maxlength')">La descripción debe tener menos de 1000 caracteres</small>
+        </div>
+
+        <ion-item>
+          <ion-label style="margin-bottom: 10px" position="floating">Aula</ion-label>
+          <ion-select
+            formControlName="classroomId"
+            (ionChange)="onClassroomChange($event.detail.value)"
+            interface="popover"
+            placeholder="Selecciona un aula"
+          >
+            <ion-select-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+              {{ classroom.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('classroomId')?.invalid && form.get('classroomId')?.touched" class="text-danger">
+          <small>Seleccionar un aula es obligatorio.</small>
+        </div>
+
+        <ion-item>
+          <ion-label style="margin-bottom: 10px" position="floating">Equipo</ion-label>
+          <ion-select
+            formControlName="deviceId"
+            interface="popover"
+            placeholder="Selecciona un equipo"
+          >
+            <ion-select-option *ngFor="let device of devices" [value]="device.id">
+              {{ device.type }} - {{ device.serial_number }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('deviceId')?.invalid && form.get('deviceId')?.touched" class="text-danger">
+          <small>Seleccionar un equipo es obligatorio.</small>
+        </div>
+
+        <ion-item>
+          <ion-label position="stacked">Comentario inicial (opcional)</ion-label>
+          <ion-textarea
+            formControlName="comments"
+            autoGrow="true"
+            placeholder="Escribe un comentario (opcional)"
+          ></ion-textarea>
+        </ion-item>
+        <div *ngIf="form.get('comments')?.invalid && form.get('comments')?.touched" class="text-danger">
+          <small *ngIf="form.get('comments')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('comments')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+
+        <ion-button mode="ios" class="ion-margin left-button" type="submit" [disabled]="form.invalid">
+          Actualizar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

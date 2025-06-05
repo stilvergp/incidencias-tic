@@ -1,0 +1,31 @@
+<app-header title="Añadir Aula" [isModal]="true"></app-header>
+
+<ion-content>
+  <div class="classroom-form">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()">
+      <div class="classroom-details">
+        <app-custom-input [control]="form.controls.name" type="text" label="Nombre del aula"></app-custom-input>
+        <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">
+          <small>El nombre del aula es obligatorio.</small>
+        </div>
+        <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">
+          <small *ngIf="form.get('name')?.hasError('minlength')">Mínimo 6 caracteres.</small>
+          <small *ngIf="form.get('name')?.hasError('maxlength')">Máximo 50 caracteres.</small>
+        </div>
+
+        <app-custom-input [control]="form.controls.location" type="text" label="Ubicación del aula"></app-custom-input>
+        <div *ngIf="form.get('location')?.invalid && form.get('location')?.touched" class="text-danger">
+          <small>La ubicación es obligatoria.</small>
+        </div>
+        <div *ngIf="form.get('location')?.invalid && form.get('location')?.touched" class="text-danger">
+          <small *ngIf="form.get('location')?.hasError('minlength')">Mínimo 6 caracteres.</small>
+          <small *ngIf="form.get('location')?.hasError('maxlength')">Máximo 50 caracteres.</small>
+        </div>
+
+        <ion-button mode="ios" class="ion-margin left-button" type="submit" [disabled]="form.invalid">
+          Añadir
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

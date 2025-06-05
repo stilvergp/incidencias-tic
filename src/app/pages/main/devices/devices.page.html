@@ -1,0 +1,123 @@
+<app-header title="Inventario general" [showMenuButton]="true"></app-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingText="Desliza para refrescar" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <h2 style="text-align: center; font-weight: bold">Gestión de Inventario</h2>
+
+  <div
+    style="display: flex; margin-bottom: 10px; margin-top: 10px; width: 100%; align-items: center;justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <ion-label>Ubicación:</ion-label>
+        <ion-select [(ngModel)]="selectedClassroomId" (ionChange)="getDevices()" interface="popover">
+          <ion-select-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+            {{ classroom.name }}
+          </ion-select-option>
+        </ion-select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <ion-label>Estado del equipo:</ion-label>
+        <ion-select [(ngModel)]="statusFilter" (ionChange)="getDevices()" interface="popover">
+          <ion-select-option value="">Cualquiera</ion-select-option>
+          <ion-select-option value="WORKING">Funciona</ion-select-option>
+          <ion-select-option value="OUT_OF_SERVICE">Fuera de servicio</ion-select-option>
+        </ion-select>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <ion-label>Ordenar por:</ion-label>
+        <ion-select [(ngModel)]="orderByFilter" (ionChange)="getDevices()" interface="popover">
+          <ion-select-option value="">Cualquiera</ion-select-option>
+          <ion-select-option value="type">Tipo</ion-select-option>
+          <ion-select-option value="brand">Marca</ion-select-option>
+        </ion-select>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <ion-input [(ngModel)]="searchValue" placeholder="Buscar..." (ngModelChange)="onSearchChange($event)"></ion-input>
+      <ion-button fill="clear" slot="end">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading">
+    <ion-card *ngFor="let placeholder of [].constructor(5)">
+      <ion-card-header>
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-skeleton-text animated style="width: 10%"></ion-skeleton-text>
+        <ion-skeleton-text animated style="width: 15%; margin-top: 10px;"></ion-skeleton-text>
+        <div class="btn-actions" style="margin-top: 10px;">
+          <ion-button fill="solid" size="small" shape="square" color="medium" disabled>
+            <ion-skeleton-text animated style="width: 50px; height: 20px;"></ion-skeleton-text>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+  <div *ngIf="!loading">
+    <div *ngIf="devices.length > 0">
+      <div class="device-item" *ngFor="let device of devices">
+        <ion-card class="device-info">
+          <ion-card-header>
+            <ion-card-title style="font-weight: bold">{{ device.type }} - {{ device.brand }}</ion-card-title>
+            <ion-button fill="outline" shape="square" color="danger"
+                        style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; --border-radius: 8px;"
+                        (click)="deleteDevice(device)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-card-header>
+          <ion-card-content>
+            <div style="display: flex; align-items: center; gap: 10px">
+              <div>
+                <strong>Aula: </strong><span class="classroom-label"> {{ selectedClassroom.name }}</span>
+              </div>
+              <div>
+                <strong>Nº Serie: </strong><span class="classroom-label"> {{ device.serial_number }}</span>
+              </div>
+            </div>
+            <span>
+              <strong>Estado:</strong>
+              <span class="status-label" [ngStyle]="{ color: getStatusColor(device.status) }" style="font-weight: bold">
+                {{ getStatusLabel(device.status) }}
+              </span>
+            </span>
+            <div class="btn-actions">
+              <ion-button fill="solid" size="small" shape="round" class="btn-manage"
+                          (click)="updateDevice(device)">
+                Actualizar
+              </ion-button>
+              <ion-button fill="clear" size="small" color="primary"
+                          [routerLink]="['/main/inventario/detalles', device.classroomId, device.id]">
+                Ver detalles
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div *ngIf="devices.length === 0">
+      <h2 style="text-align: center; font-weight: bold">No se encontraron resultados</h2>
+    </div>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreDevices($event)" *ngIf="canLoadMore">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Cargando más incidencias...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addDevice()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

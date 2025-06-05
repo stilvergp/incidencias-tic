@@ -1,0 +1,52 @@
+.incidence-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.incidence-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  background-color: #fafafa;
+  padding: 1rem;
+}
+
+.incidence-image img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-icon {
+  font-size: 100px;
+  color: #ccc;
+}
+
+.text-danger {
+  color: var(--ion-color-danger);
+  font-size: 0.8rem;
+  text-align: left;
+  margin-top: 0.3rem;
+  padding-left: 0.5rem;
+}
+
+.left-button {
+  margin-top: 1.5rem;
+  align-self: flex-start;
+}

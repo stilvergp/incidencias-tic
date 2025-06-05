@@ -1,0 +1,42 @@
+<app-header title="Registro" backButtonURL="/auth"></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="d-flex-center">
+    <form [formGroup]="signUpForm" (ngSubmit)="submit()" class="sign-up-form">
+      <div class="form-group mb-3">
+        <app-custom-input [control]="signUpForm.controls.name" icon="person-outline" type="text"
+                          label="Nombre"></app-custom-input>
+        <div *ngIf="signUpForm.get('name')?.invalid && signUpForm.get('name')?.touched" class="text-danger">
+          <small *ngIf="signUpForm.get('name')?.hasError('required')">El nombre es obligatorio.</small>
+          <small *ngIf="signUpForm.get('name')?.hasError('minlength')">El nombre debe tener al menos 6
+            caracteres</small>
+        </div>
+      </div>
+      <div class="form-group mb-3">
+        <app-custom-input [control]="signUpForm.controls.email" icon="mail-outline" type="email"
+                          label="Correo"></app-custom-input>
+        <div *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched" class="text-danger">
+          <small *ngIf="signUpForm.get('email')?.hasError('required')">El correo es obligatorio.</small>
+          <small *ngIf="signUpForm.get('email')?.hasError('email')">Introduce un correo válido.</small>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <app-custom-input [control]="signUpForm.controls.password" icon="lock-closed" type="password"
+                          label="Contraseña"></app-custom-input>
+        <div *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched" class="text-danger">
+          <small *ngIf="signUpForm.get('password')?.hasError('required')">El asunto es obligatorio.</small>
+          <small *ngIf="signUpForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 8
+            caracteres</small>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <ion-button mode="ios" expand="block" class="btn btn-primary w-100 submit" type="submit"
+                    [disabled]="signUpForm.invalid">Crear usuario
+          <ion-icon slot="end" name="person-add-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

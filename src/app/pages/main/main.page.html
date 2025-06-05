@@ -1,0 +1,22 @@
+<ion-menu contentId="menu-content" menuId="menu-content" side="start">
+  <app-header title="Menu"></app-header>
+  <ion-content class="ion-text-center">
+    <h4>Páginas</h4>
+    <ion-menu-toggle auto-hide="false" *ngFor="let page of pages">
+      <ion-item [routerLink]="page.url" routerLinkActive="active" routerDirection="root" detail>
+        <ion-icon slot="start" [name]="page.icon"></ion-icon>
+        <ion-label>{{ page.title }}</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+  </ion-content>
+  <ion-footer class="ion-no-border">
+    <ion-menu-toggle auto-hide="false">
+      <ion-item (click)="signOut()" lines="none">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+        <ion-label>Cerrar sesión</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+  </ion-footer>
+</ion-menu>
+
+<ion-router-outlet id="menu-content" main></ion-router-outlet>

@@ -1,0 +1,70 @@
+<app-header title="Actualizar Equipo" [isModal]="true"></app-header>
+<ion-content>
+  <div class="device-form">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()">
+      <div class="device-image">
+        <img *ngIf="form.value.image" [src]="form.value.image" class="device-image" alt=""/>
+        <ion-icon class="image-icon" name="image-outline" *ngIf="!form.value.image"></ion-icon>
+      </div>
+
+      <ion-button (click)="takeImage()" size="small" shape="round" mode="ios">
+        Cambiar imagen
+      </ion-button>
+
+      <div class="device-details">
+        <ion-item>
+          <ion-label position="stacked">Tipo</ion-label>
+          <ion-select formControlName="type" placeholder="Selecciona tipo">
+            <ion-select-option value="PC">PC</ion-select-option>
+            <ion-select-option value="Portátil">Portátil</ion-select-option>
+            <ion-select-option value="Proyector">Proyector</ion-select-option>
+            <ion-select-option value="Teclado">Teclado</ion-select-option>
+            <ion-select-option value="Ratón">Ratón</ion-select-option>
+            <ion-select-option value="Otro">Otro</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('type')?.invalid && form.get('type')?.touched" class="text-danger">
+          <small>Seleccionar un equipo es obligatorio.</small>
+        </div>
+        <ion-item>
+          <ion-label position="stacked">Ubicación</ion-label>
+          <ion-select placeholder="Seleccionar aula" [value]="selectedClassroomId"
+                      (ionChange)="onClassroomChange($event.detail.value)">
+            <ion-select-option *ngFor="let classroom of classrooms" [value]="classroom.id">
+              {{ classroom.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Estado</ion-label>
+          <ion-select formControlName="status" placeholder="Selecciona estado">
+            <ion-select-option value="WORKING">Operativo</ion-select-option>
+            <ion-select-option value="OUT_OF_SERVICE">Fuera de servicio</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="form.get('status')?.invalid && form.get('status')?.touched" class="text-danger">
+          <small>Seleccionar un equipo es obligatorio.</small>
+        </div>
+        <ion-item>
+          <ion-label position="stacked">Número de serie</ion-label>
+          <ion-input formControlName="serial_number" type="text" placeholder="Número de serie"></ion-input>
+        </ion-item>
+        <div *ngIf="form.get('serial_number')?.invalid && form.get('serial_number')?.touched" class="text-danger">
+          <small *ngIf="form.get('serial_number')?.hasError('minlength')">Mínimo 5 caracteres.</small>
+          <small *ngIf="form.get('serial_number')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+        <ion-item>
+          <ion-label position="stacked">Marca</ion-label>
+          <ion-input formControlName="brand" type="text" placeholder="Marca del dispositivo"></ion-input>
+        </ion-item>
+        <div *ngIf="form.get('brand')?.invalid && form.get('brand')?.touched" class="text-danger">
+          <small *ngIf="form.get('brand')?.hasError('minlength')">Mínimo 2 caracteres.</small>
+          <small *ngIf="form.get('brand')?.hasError('maxlength')">Máximo 500 caracteres.</small>
+        </div>
+        <ion-button expand="block" type="submit" [disabled]="form.invalid">
+          Guardar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>
