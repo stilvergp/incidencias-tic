@@ -17,7 +17,6 @@ import {UtilsService} from "../../../services/utils.service";
 import {Incidence} from "../../../models/incidence.model";
 import {Classroom} from "../../../models/classroom.model";
 import {Device} from "../../../models/device.model";
-import {Comment} from "../../../models/comment.model";
 import {User} from "../../../models/user.model";
 import {addIcons} from "ionicons";
 import {alertCircleOutline, laptopOutline, schoolOutline} from "ionicons/icons";
@@ -38,7 +37,6 @@ export class ManageIncidenceDetailsPage implements OnInit {
   device: Device = {} as Device;
   user: User = {} as User;
   isLoading: boolean = true;
-  comments: Comment[] = [];
 
   constructor(private route: ActivatedRoute) {
     addIcons({schoolOutline, laptopOutline, alertCircleOutline});
@@ -77,15 +75,6 @@ export class ManageIncidenceDetailsPage implements OnInit {
         console.error(error);
         this.isLoading = false;
       });
-    const commentsPath = `incidences/${id}/comments`;
-    this.firebaseService.getCollectionData(commentsPath).subscribe({
-      next: (comments: any) => {
-        this.comments = comments;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   /**

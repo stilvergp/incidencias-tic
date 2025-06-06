@@ -45,18 +45,6 @@
         </div>
 
         <div class="section">
-          <h3>Comentarios</h3>
-          <ul *ngIf="comments?.length; else noComments">
-            <li *ngFor="let comment of comments">
-              {{ comment.message }}
-            </li>
-          </ul>
-          <ng-template #noComments>
-            <p class="muted">No hay comentarios.</p>
-          </ng-template>
-        </div>
-
-        <div class="section">
           <h3>Diagnóstico</h3>
           <p *ngIf="incidence.diagnose?.length; else noDiagnose">
             {{ incidence.diagnose }}

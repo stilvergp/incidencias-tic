@@ -64,7 +64,6 @@ export class UpdateIncidenceComponent implements OnInit {
     classroomId: new FormControl('', [Validators.required]),
     reportedByUserId: new FormControl('', [Validators.required]),
     deviceId: new FormControl({value: '', disabled: true}, [Validators.required]),
-    comments: new FormControl('', [Validators.minLength(5), Validators.maxLength(500)]),
     diagnose: new FormControl(''),
     isClosed: new FormControl(false),
     id: new FormControl(''),

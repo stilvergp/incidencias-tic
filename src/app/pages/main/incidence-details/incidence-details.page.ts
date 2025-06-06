@@ -21,7 +21,6 @@ import {UtilsService} from "../../../services/utils.service";
 import {FirebaseService} from "../../../services/firebase.service";
 import {addIcons} from "ionicons";
 import {alertCircleOutline, laptopOutline, schoolOutline} from "ionicons/icons";
-import {Comment} from "../../../models/comment.model";
 
 @Component({
   selector: 'app-incidence-details',
@@ -38,7 +37,6 @@ export class IncidenceDetailsPage implements OnInit {
   device: Device = {} as Device;
   user: User = {} as User;
   isLoading: boolean = true;
-  comments: Comment[] = [];
 
   constructor(private route: ActivatedRoute) {
     addIcons({schoolOutline, laptopOutline, alertCircleOutline});
@@ -79,15 +77,6 @@ export class IncidenceDetailsPage implements OnInit {
         console.error(error);
         this.isLoading = false;
       });
-    const commentsPath = `users/${this.user.uid}/incidences/${id}/comments`;
-    this.firebaseService.getCollectionData(commentsPath).subscribe({
-      next: (comments: any) => {
-        this.comments = comments;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   /**

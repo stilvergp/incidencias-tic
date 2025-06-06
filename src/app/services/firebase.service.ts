@@ -11,7 +11,8 @@ import {User} from '../models/user.model';
 import {
   addDoc,
   collection,
-  collectionData, deleteDoc,
+  collectionData,
+  deleteDoc,
   doc,
   Firestore,
   getCountFromServer,
@@ -96,8 +97,9 @@ export class FirebaseService {
    * @returns {Promise<any>} Promesa que se resuelve con los datos del documento.
    */
   async getDocument(path: string): Promise<any> {
-    const docSnap = await getDoc(doc(this.firestore, path));
-    return docSnap.data();
+    const ref = doc(this.firestore, path);
+    const docSnap = await getDoc(ref);
+    return docSnap.exists() ? { id: ref.id, ...docSnap.data() } : null;
   }
 
   /**

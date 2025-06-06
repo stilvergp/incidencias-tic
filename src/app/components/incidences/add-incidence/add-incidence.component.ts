@@ -62,7 +62,6 @@ export class AddIncidenceComponent implements OnInit {
     classroomId: new FormControl('', [Validators.required]),
     reportedByUserId: new FormControl('', [Validators.required]),
     deviceId: new FormControl({value: '', disabled: true}, [Validators.required]),
-    comments: new FormControl('', [Validators.minLength(5), Validators.maxLength(500)]),
     diagnose: new FormControl('',),
     isClosed: new FormControl(false),
     id: new FormControl(''),
@@ -123,7 +122,6 @@ export class AddIncidenceComponent implements OnInit {
     delete this.form.value.id;
 
     const incidenceData = {...this.form.value};
-    const initialComment = this.form.value.comments?.trim();
 
     try {
       const incidenceRef = await this.firebaseService.addDocument(userPath, incidenceData);
@@ -135,21 +133,6 @@ export class AddIncidenceComponent implements OnInit {
         userId: this.user.uid
       });
 
-      if (initialComment) {
-        const commentData = {
-          userId: this.user.uid,
-          message: initialComment,
-          createdAt: Date.now(),
-        };
-
-        const userCommentsPath = `users/${this.user.uid}/incidences/${incidenceId}/comments`;
-        const generalCommentsPath = `incidences/${incidenceId}/comments`;
-
-        await Promise.all([
-          this.firebaseService.addDocument(userCommentsPath, commentData),
-          this.firebaseService.addDocument(generalCommentsPath, commentData)
-        ]);
-      }
       this.utilsService.dismissModal({success: true});
       this.utilsService.presentToast({
         message: 'Incidencia añadida exitosamente',

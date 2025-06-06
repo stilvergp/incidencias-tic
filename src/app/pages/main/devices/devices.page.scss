@@ -78,8 +78,30 @@ ion-infinite-scroll-content {
   color: #555;
 }
 
+.filter-bar {
+  display: flex;
+  flex-direction: column; /* Móvil por defecto */
+  gap: 16px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column; /* Móvil por defecto */
+  gap: 10px;
+}
+
 @media (min-width: 769px) {
   .filter-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: nowrap;
+  }
+
+  .filter-group {
+    flex-direction: row;
+    align-items: center;
   }
 }

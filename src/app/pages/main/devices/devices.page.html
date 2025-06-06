@@ -8,9 +8,8 @@
 
   <h2 style="text-align: center; font-weight: bold">Gestión de Inventario</h2>
 
-  <div
-    style="display: flex; margin-bottom: 10px; margin-top: 10px; width: 100%; align-items: center;justify-content: space-between">
-    <div style="display: flex; align-items: center; gap: 10px;">
+  <div class="filter-bar">
+    <div class="filter-group">
       <div style="display: flex; align-items: center; gap: 10px;">
         <ion-label>Ubicación:</ion-label>
         <ion-select [(ngModel)]="selectedClassroomId" (ionChange)="getDevices()" interface="popover">

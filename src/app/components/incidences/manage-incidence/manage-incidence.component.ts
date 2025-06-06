@@ -5,14 +5,13 @@ import {
   IonContent,
   IonItem,
   IonLabel,
-  IonList,
   IonSelect,
   IonSelectOption,
   IonText,
   IonTextarea
 } from "@ionic/angular/standalone";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {FirebaseService} from "../../../services/firebase.service";
 import {UtilsService} from "../../../services/utils.service";
 import {Classroom} from "../../../models/classroom.model";
@@ -20,7 +19,6 @@ import {Device} from "../../../models/device.model";
 import {User} from "../../../models/user.model";
 import {addIcons} from "ionicons";
 import {addCircleOutline, alertCircleOutline, checkmarkOutline, imageOutline} from "ionicons/icons";
-import {Comment} from "../../../models/comment.model";
 
 @Component({
   selector: 'app-manage-incidence',
@@ -36,10 +34,8 @@ import {Comment} from "../../../models/comment.model";
     IonSelect,
     IonTextarea,
     ReactiveFormsModule,
-    IonList,
     IonButton,
-    NgIf,
-    NgForOf
+    NgIf
   ]
 })
 export class ManageIncidenceComponent implements OnInit {
@@ -51,12 +47,10 @@ export class ManageIncidenceComponent implements OnInit {
   classroom: Classroom = {} as Classroom;
   device: Device = {} as Device;
   user = {} as User;
-  comments: Comment[] = [];
 
   form = new FormGroup({
     status: new FormControl('OPEN', Validators.required),
     diagnose: new FormControl('', [Validators.minLength(5), Validators.maxLength(500)]),
-    comments: new FormControl('', [Validators.minLength(5), Validators.maxLength(500)]),
     isClosed: new FormControl(false)
   });
 
@@ -85,16 +79,6 @@ export class ManageIncidenceComponent implements OnInit {
     this.form.controls.status.setValue('IN_PROGRESS');
     await this.getClassroom(this.incidence.classroomId);
     await this.getDevice(this.incidence.deviceId);
-
-    const commentsPath = `incidences/${this.incidence.id}/comments`;
-    this.firebaseService.getCollectionData(commentsPath).subscribe({
-      next: (comments: any) => {
-        this.comments = comments;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
   }
 
   /**
@@ -142,7 +126,6 @@ export class ManageIncidenceComponent implements OnInit {
     const incidencePath = `users/${this.incidence.reportedByUserId}/incidences/${this.incidence.id}`;
     const generalPath = `incidences/${this.incidence.id}`;
     const incidenceData = {...this.form.value};
-    const newComment = this.form.value.comments?.trim();
     const diagnose = this.form.value.diagnose?.trim();
 
     if (diagnose) {
@@ -160,20 +143,6 @@ export class ManageIncidenceComponent implements OnInit {
           userId: this.user.uid
         })
       ]);
-
-      if (newComment) {
-        const commentData = {
-          userId: this.user.uid,
-          message: newComment,
-          createdAt: new Date(),
-        };
-        const userCommentsPath = `users/${this.user.uid}/incidences/${this.incidence.id}/comments`;
-        const generalCommentsPath = `incidences/${this.incidence.id}/comments`;
-        await Promise.all([
-          this.firebaseService.addDocument(userCommentsPath, commentData),
-          this.firebaseService.addDocument(generalCommentsPath, commentData)
-        ]);
-      }
       this.utilsService.dismissModal({success: true});
       this.utilsService.presentToast({
         message: 'Incidencia actualizada exitosamente',
