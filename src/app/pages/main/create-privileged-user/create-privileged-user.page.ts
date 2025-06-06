@@ -31,8 +31,8 @@ export class CreatePrivilegedUserPage {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     name: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    tic_role: new FormControl(0),
-    admin_role: new FormControl(0),
+    tic_role: new FormControl(false),
+    admin_role: new FormControl(false),
     uid: new FormControl('')
   });
 
@@ -91,7 +91,7 @@ export class CreatePrivilegedUserPage {
       let path = `users/${uid}`;
       delete this.form.value.password;
 
-      this.firebaseService.addDocument(path, this.form.value)
+      this.firebaseService.setDocument(path, this.form.value)
         .then(() => {
           this.form.reset();
         })

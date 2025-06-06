@@ -3,6 +3,6 @@ export interface User {
   email: string,
   password: string,
   name: string,
-  tic_role: number,
-  admin_role: number
+  tic_role: boolean,
+  admin_role: boolean
 }

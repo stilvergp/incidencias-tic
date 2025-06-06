@@ -21,7 +21,7 @@ export class NotFoundPage {
   goToHome() {
     const user = this.utilsService.getLocalStoredUser();
     if (user) {
-      this.utilsService.routerLink(user.tic_role === 1 ? 'main/incidencias' : 'main/mis-incidencias');
+      this.utilsService.routerLink(user.tic_role ? 'main/incidencias' : 'main/mis-incidencias');
     } else {
       this.utilsService.routerLink('auth');
     }

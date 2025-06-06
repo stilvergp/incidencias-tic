@@ -48,14 +48,14 @@ export class MainPage {
   constructor() {
     addIcons({logOutOutline, homeOutline, buildOutline, laptopOutline, schoolOutline, personAddOutline});
     this.user = this.utilsService.getLocalStoredUser()!;
-    if (this.user.tic_role === 1) {
+    if (this.user.tic_role) {
       this.pages.push({
         title: 'Gestionar incidencias',
         url: 'incidencias',
         icon: 'build-outline'
       });
     }
-    if (this.user.admin_role === 1) {
+    if (this.user.admin_role) {
       this.pages.push({
         title: 'Inventario de equipos',
         url: 'inventario',

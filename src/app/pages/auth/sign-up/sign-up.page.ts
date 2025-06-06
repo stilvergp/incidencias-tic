@@ -30,8 +30,8 @@ export class SignUpPage {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
     name: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    tic_role: new FormControl(0),
-    admin_role: new FormControl(0),
+    tic_role: new FormControl(false),
+    admin_role: new FormControl(false),
     uid: new FormControl('')
   });
 

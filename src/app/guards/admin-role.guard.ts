@@ -6,7 +6,7 @@ export const adminRoleGuard: CanActivateFn = (route, state) => {
   const utilsService = inject(UtilsService);
   const localStoredUser = utilsService.getLocalStoredUser();
 
-  const hasTicRole = localStoredUser?.tic_role === 1;
+  const hasTicRole = localStoredUser?.tic_role === true;
 
   return hasTicRole ? true : utilsService.urlTree('/auth');
 };

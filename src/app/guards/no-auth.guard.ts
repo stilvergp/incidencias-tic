@@ -12,7 +12,7 @@ export const noAuthGuard: CanActivateFn = async (route, state) => {
   if (isAuthenticated) {
     let user = utilsService.getLocalStoredUser()!;
 
-    return utilsService.urlTree(user.tic_role === 1 ? 'main/incidencias' : 'main/mis-incidencias');
+    return utilsService.urlTree(user.tic_role ? 'main/incidencias' : 'main/mis-incidencias');
   } else {
     return true;
   }
