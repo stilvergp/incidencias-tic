@@ -294,6 +294,7 @@ export class IncidencesPage implements OnDestroy {
     });
     if (success) {
       this.getIncidences();
+      this.getIncidencesCount();
     }
   }
 
@@ -316,6 +317,7 @@ export class IncidencesPage implements OnDestroy {
           position: 'middle',
           icon: 'checkmark-outline'
         });
+        this.getIncidencesCount();
       })
       .catch(error => {
         this.utilsService.presentToast({

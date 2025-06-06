@@ -228,9 +228,9 @@ export class DevicesPage implements OnDestroy, OnInit {
   getStatusLabel(status: Device['status']): string {
     switch (status) {
       case 'WORKING':
-        return 'Abierta';
+        return 'Funciona';
       case 'OUT_OF_SERVICE':
-        return 'En revisión';
+        return 'Fuera de servicio';
     }
   }
 
